@@ -21,8 +21,7 @@ const FeedbackSchema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const nameFieldId = useId();
-  const phoneFieldId = useId();
+  const id = useId();
 
   const dispatch = useDispatch();
 
@@ -41,13 +40,13 @@ const ContactForm = () => {
       }}
     >
       <Form className={css.formContainer}>
-        <label htmlFor={nameFieldId} className={css.label}>
+        <label htmlFor={`${id}-n`} className={css.label}>
           Username
         </label>
         <Field
           type="text"
           name="username"
-          id={nameFieldId}
+          id={`${id}-n`}
           className={css.inputField}
         />
         <ErrorMessage
@@ -56,13 +55,13 @@ const ContactForm = () => {
           className={css.errorMessage}
         />
 
-        <label htmlFor={phoneFieldId} className={css.label}>
+        <label htmlFor={`${id}-p`} className={css.label}>
           Phone
         </label>
         <Field
           type="text"
           name="number"
-          id={phoneFieldId}
+          id={`${id}-p`}
           className={css.inputField}
         />
         <ErrorMessage
