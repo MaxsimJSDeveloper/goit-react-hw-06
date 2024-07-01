@@ -7,6 +7,7 @@ const contactSlice = createSlice({
     changeFilter: (state, action) => ({
       ...state,
       name: action.payload,
+      number: action.payload,
     }),
   },
 });

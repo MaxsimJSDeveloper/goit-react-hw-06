@@ -1,24 +1,13 @@
-import css from "./ContactForm.module.css";
-
 import { Field, Form, Formik, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { useId } from "react";
 import { nanoid } from "nanoid";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
 
-const FeedbackSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  number: Yup.string()
-    .matches(
-      /^(?:\d{10}|\d{3}-\d{3}-\d{2}-\d{2})$/,
-      "Phone number must be 10 digits long or in format xxx-xxx-xx-xx"
-    )
-    .required("Required"),
-});
+import { addContact } from "../../redux/contactsSlice";
+import { addContactSchema } from "../../js/validation";
+import { handleKeyPress } from "../../js/handleKeyPress";
+
+import css from "./ContactForm.module.css";
 
 const ContactForm = () => {
   const id = useId();
@@ -28,7 +17,7 @@ const ContactForm = () => {
   return (
     <Formik
       initialValues={{ username: "", number: "" }}
-      validationSchema={FeedbackSchema}
+      validationSchema={addContactSchema}
       onSubmit={(values, actions) => {
         const newContact = {
           id: nanoid(),
@@ -43,32 +32,38 @@ const ContactForm = () => {
         <label htmlFor={`${id}-n`} className={css.label}>
           Username
         </label>
-        <Field
-          type="text"
-          name="username"
-          id={`${id}-n`}
-          className={css.inputField}
-        />
-        <ErrorMessage
-          name="username"
-          component="span"
-          className={css.errorMessage}
-        />
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            name="username"
+            id={`${id}-n`}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="username"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
 
         <label htmlFor={`${id}-p`} className={css.label}>
           Phone
         </label>
-        <Field
-          type="text"
-          name="number"
-          id={`${id}-p`}
-          className={css.inputField}
-        />
-        <ErrorMessage
-          name="number"
-          component="span"
-          className={css.errorMessage}
-        />
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            name="number"
+            pattern="\d*"
+            onKeyPress={handleKeyPress}
+            id={`${id}-p`}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="number"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
 
         <button type="submit" className={css.submitButton}>
           Add contact
